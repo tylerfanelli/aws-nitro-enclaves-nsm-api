@@ -17,6 +17,12 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
+ifeq ($(STATIC),1)
+	LIBNSM_SUFFIX := a
+else
+	LIBNSM_SUFFIX := so
+endif
+
 LIBDIR ?= $(PREFIX)/lib
 INCLUDEDIR ?= $(PREFIX)/include
 
@@ -115,8 +121,7 @@ install: nsm-lib libnsm.pc
 	install -d $(DESTDIR)$(INCLUDEDIR)
 	install -m 644 $(RELEASE_DIR)/nsm.h $(DESTDIR)$(INCLUDEDIR)
 	install -m 644 libnsm.pc $(DESTDIR)$(LIBDIR)/pkgconfig
-	install -m 755 $(RELEASE_DIR)/libnsm.so $(DESTDIR)$(LIBDIR)
-	install -m 644 $(RELEASE_DIR)/libnsm.a $(DESTDIR)$(LIBDIR)
+	install -m 755 $(RELEASE_DIR)/libnsm.$(LIBNSM_SUFFIX) $(DESTDIR)$(LIBDIR)
 
 clean:
 	cargo clean
